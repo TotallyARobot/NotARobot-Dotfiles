@@ -209,8 +209,6 @@ awful.screen.connect_for_each_screen(function(s)
 
     --!Volume Widget
     local volume_widget = require('volume-widget.volume')
-    local battery_widget = require('awesome-wm-widgets.battery-widget.battery') 
-    local net_widget = require('awesome-wm-widgets.net-speed-widget.net-speed')
 
     local rounded_rect_shape = function(cr,w,h)
     gears.shape.rounded_rect(
@@ -233,13 +231,10 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            net_widget(),
 	    volume_widget(),
-	    battery_widget(),
 	    mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
-            s.mylayoutbox,
         },
     }
 end)
