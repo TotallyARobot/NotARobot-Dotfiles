@@ -5,6 +5,7 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local client = require("awful.client")
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
@@ -13,21 +14,21 @@ local theme = {}
 
 theme.font          = "sans 8"
 
-theme.bg_normal     = "#263238"
-theme.bg_focus      = "#37474f"
+theme.bg_normal     = "#1c2023"
+theme.bg_focus      = "#1c2030"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
+theme.fg_normal     = "#c7ccd1"
+theme.fg_focus      = "#747c84"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = dpi(15)
-theme.border_width  = dpi(2)
-theme.border_normal = "#263238"
-theme.border_focus  = "#37474f"
+theme.border_width  = dpi(3)
+theme.border_normal = "#1c2023"
+theme.border_focus  = "#1c2030"
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -97,7 +98,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "/home/notarobot/.config/awesome/theme/socwm.jpg"
+theme.wallpaper = "~/awesome/theme/socwm.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"

@@ -49,7 +49,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/notarobot/.config/awesome/theme/theme.lua")
+beautiful.init("~/.config/awesome/theme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "st"
@@ -173,7 +173,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    local names = { "Home", "Games", "Music", "Browser", "Misc 1", "Misc 2"}
+    local names = { "Home", "Music", "Games", "Misc 1", "Misc 2"}
     local l = awful.layout.suit
     awful.tag(names, s, l.tile)
 
@@ -209,13 +209,17 @@ awful.screen.connect_for_each_screen(function(s)
 
     --!Volume Widget
     local volume_widget = require('volume-widget.volume')
-    
+    local battery_widget = require('awesome-wm-widgets.battery-widget.battery') 
+    local net_widget = require('awesome-wm-widgets.net-speed-widget.net-speed')
 
-
-
+    local rounded_rect_shape = function(cr,w,h)
+    gears.shape.rounded_rect(
+      cr, w, h, 10
+    )
+    end
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s, width = 1550 , height = 25, shape = rounded_rect_shape })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -229,7 +233,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            volume_widget(),
+            net_widget(),
+	    volume_widget(),
+	    battery_widget(),
 	    mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -289,9 +295,9 @@ globalkeys = gears.table.join(
             awful.client.focus.history.previous()
             if client.focus then
                 client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
+	end
+end,
+{description = "go back", group = "client"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -334,12 +340,14 @@ globalkeys = gears.table.join(
 
     awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
-    awful.key({ modkey,"Shift" },            "b",     function () awful.util.spawn("firefox") end,
-              {description = "run firefox", group = "apps"}),
+    awful.key({ modkey,"Shift" },            "b",     function () awful.util.spawn("qutebrowser") end,
+              {description = "open browser", group = "apps"}),
     awful.key({ modkey,"Shift" },            "d",     function () awful.util.spawn("discord") end,
               {description = "run discord", group = "apps"}),
     awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%+", false) end),
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%-", false) end),
+    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10", false) end),
+    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 10", false) end),
 
 
     awful.key({ modkey }, "x",
@@ -476,6 +484,7 @@ awful.rules.rules = {
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
+		     client_shape_clip = rounded_rect_shape,
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = clientkeys,
@@ -540,6 +549,9 @@ client.connect_signal("manage", function (c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+    c.shape = function(cr,w,h)
+	    	gears.shape.rounded_rect(cr,w,h,10)
+    end
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
@@ -589,19 +601,26 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
+-- }}} 
 
+--rounded edges
+--    client.connect_signal("manage", function (c)
+--	    c.shape = function(rc,w,h)
+--		    gears.shape.rounded_rect(cr,w,h,50)
+--	    end
+--    end)
+--
 
 -- Autostart apps
 -- awful.spawn.with_shell("~/komorebi/build/komorebi")
-awful.spawn.with_shell("picom")
-awful.spawn(terminal.."neofetch")
-awful.spawn(terminal.." neofetch")
-sleep(1)
-awful.spawn(terminal.." tty-clock -ctx")
-sleep(1);
-awful.spawn(terminal.." cava")
-sleep(1);
-awful.spawn(terminal.." cbonsai -lim 'Hello World'")
+--awful.spawn.with_shell("picom")
+awful.spawn.with_shell("connman-gtk")
+--awful.spawn(terminal.." neofetch")
+--sleep(1)
+--awful.spawn(terminal.." tty-clock -ctx")
+--sleep(1);
+--awful.spawn(terminal.." cava")
+--sleep(1);
+--awful.spawn(terminal.." cbonsai -lim 'Hello World'")
 awful.spawn.with_shell("nitrogen --restore")
-awful.spawn.with_shell("redshift -l 0.00:0.00");
+awful.spawn.with_shell("redshift -l 42.911758:-88.121643");
