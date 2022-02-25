@@ -366,7 +366,11 @@ globalkeys = gears.table.join(
 	    c.fullscreen = not c.fullscreen
             c:raise()
 	    c.shape = function(cr,w,h)
+		    if (c.fullscreen) then
 		    gears.shape.rectangle(cr,w,h)
+	    	    else
+		    gears.shape.rounded_rect(cr,w,h,8)
+	    	    end
 	    end
         end,
         {description = "toggle fullscreen", group = "client"}),
